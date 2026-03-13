@@ -5,12 +5,12 @@ output "ecs_cluster_name" {
 
 output "ecs_service_name" {
   description = "Name of the ECS service"
-  value       = aws_ecs_service.main.name
+  value       = local.ecs_service_name
 }
 
 output "task_definition_arn" {
   description = "ARN of the ECS task definition"
-  value       = aws_ecs_task_definition.main.arn
+  value       = var.use_existing_service ? "existing" : aws_ecs_task_definition.main[0].arn
 }
 
 output "sns_topic_arn" {

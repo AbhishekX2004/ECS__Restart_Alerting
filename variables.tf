@@ -22,6 +22,18 @@ variable "ecs_cluster_name" {
   default     = ""
 }
 
+variable "use_existing_service" {
+  description = "Whether to use an already existing ECS service instead of creating a new one"
+  type        = bool
+  default     = false
+}
+
+variable "ecs_service_name" {
+  description = "The name of the existing ECS service to use (required if use_existing_service is true)"
+  type        = string
+  default     = ""
+}
+
 # Networking
 variable "vpc_id" {
   description = "VPC ID to deploy into. Leave empty to use the default VPC."

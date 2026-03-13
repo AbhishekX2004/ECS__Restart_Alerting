@@ -13,6 +13,6 @@ resource "aws_cloudwatch_metric_alarm" "high_container_restarts" {
 
   dimensions = {
     ClusterName = local.ecs_cluster_name
-    ServiceName = aws_ecs_service.main.name
+    ServiceName = local.ecs_service_name
   }
 }
