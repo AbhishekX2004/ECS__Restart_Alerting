@@ -10,6 +10,18 @@ variable "project_name" {
   default     = "monitoring"
 }
 
+variable "use_existing_cluster" {
+  description = "Whether to use an already existing ECS cluster instead of creating a new one"
+  type        = bool
+  default     = false
+}
+
+variable "ecs_cluster_name" {
+  description = "The name of the existing ECS cluster to use (required if use_existing_cluster is true)"
+  type        = string
+  default     = ""
+}
+
 # Networking
 variable "vpc_id" {
   description = "VPC ID to deploy into. Leave empty to use the default VPC."

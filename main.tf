@@ -1,12 +1,18 @@
 # 1. ECS Cluster (Container Insights enabled for monitoring)
 
 resource "aws_ecs_cluster" "main" {
-  name = "${var.project_name}-cluster"
+  count = var.use_existing_cluster ? 0 : 1
+  name  = "${var.project_name}-cluster"
 
   setting {
     name  = "containerInsights"
     value = "enabled"
   }
+}
+
+locals {
+  ecs_cluster_id   = var.use_existing_cluster ? data.aws_ecs_cluster.existing[0].id : aws_ecs_cluster.main[0].id
+  ecs_cluster_name = var.use_existing_cluster ? data.aws_ecs_cluster.existing[0].cluster_name : aws_ecs_cluster.main[0].name
 }
 
 # IAM Role — ECS Task Execution
@@ -72,7 +78,7 @@ resource "aws_ecs_task_definition" "main" {
 # ECS Service
 resource "aws_ecs_service" "main" {
   name            = "${var.project_name}-service"
-  cluster         = aws_ecs_cluster.main.id
+  cluster         = local.ecs_cluster_id
   task_definition = aws_ecs_task_definition.main.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"

@@ -12,7 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "high_container_restarts" {
   treat_missing_data  = "notBreaching"
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.main.name
+    ClusterName = local.ecs_cluster_name
     ServiceName = aws_ecs_service.main.name
   }
 }

@@ -9,3 +9,8 @@ data "aws_subnets" "selected" {
     values = [data.aws_vpc.selected.id]
   }
 }
+
+data "aws_ecs_cluster" "existing" {
+  count        = var.use_existing_cluster ? 1 : 0
+  cluster_name = var.ecs_cluster_name
+}
