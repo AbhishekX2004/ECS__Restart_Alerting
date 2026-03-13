@@ -1,0 +1,31 @@
+# =============================================================================
+# Example variable values — copy this file to terraform.tfvars and customise
+# =============================================================================
+# cp terraform.tfvars.example terraform.tfvars
+# =============================================================================
+
+# -- General ------------------------------------------------------------------
+aws_region   = "us-east-1"
+project_name = "monitoring"                 # Used as prefix for all resource names
+
+# -- Networking ---------------------------------------------------------------
+# vpc_id          = "vpc-0abc123def456"     # Leave commented out to use default VPC
+assign_public_ip = true
+
+# -- ECS Task -----------------------------------------------------------------
+ecs_task_cpu    = "256"                      # 0.25 vCPU
+ecs_task_memory = "512"                      # 0.5 GB
+container_image = "busybox"
+# container_command = ["sh", "-c", "your-entrypoint"]
+container_max_retry_count       = 10
+container_restart_attempt_period = 60
+desired_count                    = 1
+
+# -- CloudWatch Logs ----------------------------------------------------------
+log_retention_days = 7
+
+# -- Alerting -----------------------------------------------------------------
+alert_email              = "your-email@example.com"   # REQUIRED — no default
+alarm_threshold          = 3
+alarm_evaluation_periods = 1
+alarm_period             = 600                         # seconds (600 = 10 min)
