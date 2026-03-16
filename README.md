@@ -64,3 +64,16 @@ When attaching this module to an **existing ECS service**, ensure the following 
 1. **Confirm SNS Subscription**: After applying Terraform, check the `alert_email` inbox for a "AWS Notification - Subscription Confirmation" email. You must click the confirmation link, or alerts will be silently dropped.
 2. **Enable Container Insights**: Ensure the existing ECS cluster has "Container Insights" enabled in the AWS Console. If disabled, the `RestartCount` metric is never emitted.
 3. **Configure Restart Policies**: Ensure the existing Task Definition has a **Container restart policy** enabled. If missing, Fargate will silently kill crashing tasks instead of incrementing `RestartCount`. (Note: This module automatically adds this policy when creating *new* task definitions).
+4. **Metric Visibility**: The `RestartCount` metric name will only appear in the CloudWatch UI dropdowns *after* the first actual restart occurs. To create a dashboard widget before the first crash, use the **Source** tab in the widget editor and manually paste the metric JSON:
+     ```json
+     {
+         "metrics": [
+             [ "ECS/ContainerInsights", "RestartCount", "ServiceName", "REPLACE_WITH_SERVICE_NAME", "ClusterName", "REPLACE_WITH_CLUSTER_NAME" ]
+         ],
+         "view": "timeSeries",
+         "stacked": false,
+         "region": "REPLACE_WITH_REGION",
+         "stat": "Sum",
+         "period": 600
+     }
+     ```
